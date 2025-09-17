@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Start to Start — Enroll</title>
+<style>
+  body{margin:0;background:#0f172a;color:#e5e7eb;font:16px/1.5 system-ui,Segoe UI,Roboto,Arial,sans-serif}
+  .wrap{max-width:1000px;margin:auto;padding:20px}
+  h1{margin:0 0 10px 0;font-size:22px}
+  .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  @media (max-width:900px){.grid{grid-template-columns:1fr}}
+  .card{background:#111827;border:1px solid #1f2937;border-radius:14px;padding:12px}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .price{font-weight:800;font-size:20px}
+  .badge{display:inline-block;border:1px solid #334155;border-radius:999px;padding:2px 8px;font-size:12px;color:#cbd5e1}
+  .form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+  .form .full{grid-column:1/-1}
+  label{display:block;font-size:12px;color:#cbd5e1;margin-bottom:6px}
+  input,select{width:100%;padding:10px;border-radius:10px;border:1px solid #253046;background:#0b1220;color:#e5e7eb}
+  button{background:#2563eb;border:1px solid #1e3a8a;color:white;padding:10px 14px;border-radius:10px;cursor:pointer}
+  .help{font-size:12px;color:#9ca3af}
+  .otp{display:none}.otp.active{display:block}
+  .muted{color:#9ca3af}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Enroll in a Start to Start Masterclass</h1>
+
+  <section class="grid" id="cards"></section>
+
+  <div class="card" style="margin-top:12px">
+    <h2 style="margin:0 0 8px 0">Reserve your seat <span class="badge">10-minute price lock</span> <span class="badge">Timer <span id="timer">—</span></span></h2>
+    <form id="f" class="form" novalidate>
+      <div class="full">
+        <label>Masterclass</label>
+        <select name="mc" required>
+          <option value="">Select</option>
+          <option value="OPM">OPM</option>
+          <option value="AGP">Agile PMO Practitioners</option>
+          <option value="SSS">Streets-Smart SAP PM</option>
+        </select>
+      </div>
+      <div><label>First name</label><input name="first" required></div>
+      <div><label>Last name</label><input name="last" required></div>
+      <div><label>Work email</label><input name="email" type="email" required></div>
+      <div><label>Confirm email</label><input name="email2" type="email" required></div>
+      <div><label>Mobile phone (+country…)</label><input name="phone" placeholder="+358…" required></div>
+      <div><label>Country</label><input name="country"></div>
+      <div><label>Company</label><input name="company"></div>
+      <div><label>Role/seniority</label><input name="role"></div>
+      <div><label>Preferred cohort month</label><input name="cohort" type="month"></div>
+      <div><label>Invoice entity</label>
+        <select name="invoice"><option value="self">Self</option><option value="company">Company</option></select>
+      </div>
+      <div><label>VAT ID</label><input name="vat"></div>
+      <div><label>Referral code</label><input name="ref"></div>
+      <div class="full"><label><input type="checkbox" id="consent" required> I agree to Terms and Privacy</label></div>
+      <div class="full">
+        <button type="button" id="req">Request OTP</button> <span class="help">Price locks when OTP is sent.</span>
+      </div>
+      <div id="otpBox" class="otp full">
+        <label>Enter OTP</label><input id="otp" inputmode="numeric" pattern="[0-9]*">
+        <div class="help">Check your inbox. You can request again.</div>
+        <button type="button" id="verify">Verify & Enroll</button>
+      </div>
+      <div id="err" class="full muted"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+const https://st2s-enroll.a-hashem.workers.dev/  = "https://st2s-enroll.<YOURNAME>.workers.dev"; // <-- replace
+
+const PERSONAL = new Set(["gmail.com","yahoo.com","outlook.com","hotmail.com","live.com","icloud.com","proton.me","protonmail.com","gmx.com","yandex.com","aol.com","mail.com","me.com"]);
+const timerEl = document.getElementById('timer'); let lockId=null, lockUntil=null, tInt=null;
+
+function fmtEUR(cents){ return "€"+Math.round(cents/100); }
+
+async function loadCounters(){
+  const r = await fetch(https://st2s-enroll.a-hashem.workers.dev/ +"/api/counters"); const j = await r.json();
+  const price = (mc, seat)=>{
+    if(seat<=25) return 0;
+    const cfg = {OPM:[100,499,499], AGP:[300,999,999], SSS:[100,599,599]}[mc];
+    if(seat<=40) return Math.round((cfg[0] + (seat-25)*(cfg[1]-cfg[0])/15))*100;
+    return cfg[2]*100;
+  };
+  const el = document.getElementById('cards'); el.innerHTML="";
+  ["OPM","AGP","SSS"].forEach(mc=>{
+    const count = j[mc]||0, next=count+1, p=price(mc,next);
+    const card = document.createElement('div'); card.className="card";
+    card.innerHTML = `
+      <div class="row"><div><div class="badge">${mc}</div><div class="muted">Enrolled</div></div>
+      <div class="price">${fmtEUR(p)}</div></div>
+      <div class="row"><div style="font-weight:700;font-size:18px">${count}</div>
+      <div class="badge">${Math.max(25-count,0)} free left</div>
+      <div class="badge">${count<40 ? (count<25? 25-count : 40-count) : 0} to next price</div></div>`;
+    el.appendChild(card);
+  });
+}
+loadCounters();
+
+function err(t){ document.getElementById('err').textContent=t; }
+function clearErr(){ err(""); }
+
+function getForm(){
+  const f = Object.fromEntries(new FormData(document.getElementById('f')).entries());
+  if(!f.mc) return err("Select a masterclass."), null;
+  if(!f.first || !f.last) return err("Enter your name."), null;
+  if(!f.email || !f.email2 || f.email.toLowerCase()!==f.email2.toLowerCase()) return err("Emails must match."), null;
+  const d = f.email.split("@")[1]?.toLowerCase(); if(!d || PERSONAL.has(d)) return err("Personal email domains are blocked."), null;
+  if(!/^\+[1-9]\d{6,14}$/.test(f.phone)) return err("Use international format e.g. +358..."), null;
+  if(!document.getElementById('consent').checked) return err("Consent required."), null;
+  return f;
+}
+
+document.getElementById('req').onclick = async ()=>{
+  clearErr();
+  const f = getForm(); if(!f) return;
+  try{
+    const r = await fetch(https://st2s-enroll.a-hashem.workers.dev/ +"/api/otp/request", {method:"POST", headers:{'content-type':'application/json'}, body:JSON.stringify({
+      mc:f.mc, first:f.first, last:f.last, email:f.email, phone:f.phone, country:f.country, company:f.company, role:f.role, cohort:f.cohort, invoice:f.invoice, vat:f.vat, ref:f.ref
+    })});
+    const j = await r.json(); if(!j.ok) return err(j.error||"Failed to send OTP");
+    lockId = j.lockId; lockUntil = Date.parse(j.lockExpiresAt);
+    document.getElementById('otpBox').classList.add('active'); startTimer();
+  }catch(e){ err("Network error."); }
+};
+
+document.getElementById('verify').onclick = async ()=>{
+  clearErr();
+  if(!lockId) return err("Request OTP first.");
+  const f = getForm(); if(!f) return;
+  const code = document.getElementById('otp').value.trim(); if(code.length<4) return err("Enter the OTP.");
+  try{
+    const r = await fetch(https://st2s-enroll.a-hashem.workers.dev/ +"/api/otp/verify",{method:"POST", headers:{'content-type':'application/json'}, body:JSON.stringify({
+      email:f.email, code, lockId, first:f.first, last:f.last, phone:f.phone, country:f.country, company:f.company, role:f.role, cohort:f.cohort, invoice:f.invoice, vat:f.vat, ref:f.ref
+    })});
+    const j = await r.json(); if(!j.ok) return err(j.error||"Verification failed.");
+    alert(`Enrollment confirmed\nSeat #${j.seat}\nPrice ${fmtEUR(j.price_cents)}`);
+    lockId=null; stopTimer(); timerEl.textContent="—"; document.getElementById('f').reset(); document.getElementById('otpBox').classList.remove('active'); loadCounters();
+  }catch(e){ err("Network error."); }
+};
+
+function startTimer(){
+  stopTimer();
+  tInt = setInterval(()=>{
+    const ms = lockUntil - Date.now(); if(ms<=0){ timerEl.textContent="expired"; stopTimer(); return; }
+    const m = Math.floor(ms/60000), s = Math.floor((ms%60000)/1000);
+    timerEl.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }, 250);
+}
+function stopTimer(){ if(tInt){ clearInterval(tInt); tInt=null; } }
+</script>
+</body>
+</html>
