@@ -2,54 +2,75 @@
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Admin Cockpit</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-  body{margin:0;background:#0b1020;color:#e5e7eb;font:16px/1.5 system-ui}
-  .wrap{max-width:1100px;margin:auto;padding:20px}
-  input,button{padding:8px 10px;border-radius:8px;border:1px solid #2b3b63;background:#0e162b;color:#e5e7eb}
-  button{background:#2563eb;border-color:#1e3a8a;cursor:pointer}
-  table{width:100%;border-collapse:collapse;margin-top:10px}
-  th,td{border-bottom:1px solid #1f2a44;padding:8px;font-size:13px}
+body{margin:0;background:#0b1020;color:#e5e7eb;font:15px/1.55 Inter,system-ui}
+.wrap{max-width:1100px;margin:auto;padding:22px}
+h1{font-size:26px;margin:8px 0 6px;font-weight:800}
+.card{background:#0f172a;border:1px solid #1e293b;border-radius:16px;padding:14px;margin-top:10px}
+input,button{padding:10px 12px;border-radius:10px;border:1px solid #263046;background:#0e162b;color:#e5e7eb}
+button{background:#2563eb;border-color:#1e3a8a;cursor:pointer;font-weight:600}
+small{color:#94a3b8}
+table{width:100%;border-collapse:collapse;margin-top:12px}
+th,td{border-bottom:1px solid #1f2a44;padding:8px;font-size:13px;text-align:left}
+.btn{margin:2px 4px}
+.badge{display:inline-block;border:1px solid #334155;border-radius:999px;padding:2px 8px;font-size:12px;color:#cbd5e1}
 </style></head>
 <body>
 <div class="wrap">
   <h1>Admin Cockpit</h1>
-  <div>
+  <div class="card">
+    <p><b>How to use</b></p>
+    <ol>
+      <li>Paste the admin token and click <b>Load</b>.</li>
+      <li>Use the buttons to adjust counters if needed.</li>
+      <li>Review enrollments in the table. Copy to CSV using your browser’s copy or print.</li>
+    </ol>
+    <small>Masterclasses: <span class="badge">Occasional Project Manager</span> <span class="badge">Agile PMO Transformation (IT Execs)</span> <span class="badge">Streets-Smart SAP PM</span></small>
+  </div>
+
+  <div class="card">
     <label>Admin token</label>
-    <input id="tok" placeholder="paste ADMIN_TOKEN">
+    <input id="tok" placeholder="paste ADMIN_TOKEN" style="width:55%">
     <button id="load">Load</button>
   </div>
-  <div style="margin-top:10px">
-    <button id="opmMinus">OPM –</button>
-    <button id="opmPlus">OPM +</button>
-    <button id="agpMinus">AGP –</button>
-    <button id="agpPlus">AGP +</button>
-    <button id="sssMinus">SSS –</button>
-    <button id="sssPlus">SSS +</button>
+
+  <div class="card">
+    <button class="btn" id="opmMinus">OPM –</button>
+    <button class="btn" id="opmPlus">OPM +</button>
+    <button class="btn" id="agpMinus">AGP –</button>
+    <button class="btn" id="agpPlus">AGP +</button>
+    <button class="btn" id="sssMinus">SSS –</button>
+    <button class="btn" id="sssPlus">SSS +</button>
+    <pre id="counts" style="margin:10px 0 0 0;white-space:pre-wrap"></pre>
   </div>
-  <pre id="counts"></pre>
-  <table>
-    <thead><tr><th>UUID</th><th>MC</th><th>Seat</th><th>Price</th><th>Name</th><th>Email</th><th>Company</th><th>Cohort</th><th>Time</th></tr></thead>
-    <tbody id="rows"></tbody>
-  </table>
+
+  <div class="card">
+    <table>
+      <thead><tr><th>UUID</th><th>MC</th><th>Seat</th><th>Price</th><th>Name</th><th>Email</th><th>Company</th><th>Cohort</th><th>Time</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
 </div>
+
 <script>
-const b3Yb5c722007KDlNrFcJcLsIpdaU0xH624qzcIe-14HVnbdsfjh6 = "https://st2s-enroll.<YOURNAME>.workers.dev"; // <-- replace
+const API_BASE = "https://st2s-enroll.<YOURNAME>.workers.dev"; // <-- set this
 
 function auth(){ const t=document.getElementById('tok').value.trim(); return t?{'authorization':'Bearer '+t}:{ }; }
-async function loadCounts(){ const j = await (await fetch(b3Yb5c722007KDlNrFcJcLsIpdaU0xH624qzcIe-14HVnbdsfjh6+'/api/counters')).json(); document.getElementById('counts').textContent=JSON.stringify(j,null,2); }
+async function loadCounts(){ const j = await (await fetch(API_BASE+'/api/counters')).json(); document.getElementById('counts').textContent=JSON.stringify(j,null,2); }
 async function loadEnrollees(){
-  const r = await fetch(b3Yb5c722007KDlNrFcJcLsIpdaU0xH624qzcIe-14HVnbdsfjh6+'/api/admin/enrollees',{headers:{...auth()}});
+  const r = await fetch(API_BASE+'/api/admin/enrollees',{headers:{...auth()}});
   if(r.status===401){ alert('Bad token'); return; }
   const j = await r.json(); const tb = document.getElementById('rows'); tb.innerHTML="";
   j.forEach(e=>{
     const tr = document.createElement('tr');
     const price = "€"+Math.round((e.price_cents||0)/100);
-    const ts = new Date((e.created_at||0)*1000).toISOString();
+    const ts = new Date((e.created_at||0)*1000).toLocaleString();
     tr.innerHTML = `<td>${e.id}</td><td>${e.mc}</td><td>${e.seat}</td><td>${price}</td><td>${e.first||""} ${e.last||""}</td><td>${e.email||""}</td><td>${e.company||""}</td><td>${e.cohort||""}</td><td>${ts}</td>`;
     tb.appendChild(tr);
   });
 }
-async function adj(mc,delta){ await fetch(b3Yb5c722007KDlNrFcJcLsIpdaU0xH624qzcIe-14HVnbdsfjh6+'/api/admin/counter/adjust',{method:'POST',headers:{'content-type':'application/json',...auth()},body:JSON.stringify({mc,delta})}); loadCounts(); }
+async function adj(mc,delta){ await fetch(API_BASE+'/api/admin/counter/adjust',{method:'POST',headers:{'content-type':'application/json',...auth()},body:JSON.stringify({mc,delta})}); loadCounts(); }
 
 document.getElementById('load').onclick = ()=>{ loadCounts(); loadEnrollees(); };
 document.getElementById('opmMinus').onclick=()=>adj('OPM',-1);
