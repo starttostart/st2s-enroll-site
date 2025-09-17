@@ -54,12 +54,12 @@ th,td{border-bottom:1px solid #1f2a44;padding:8px;font-size:13px;text-align:left
 </div>
 
 <script>
-const API_BASE = "https://st2s-enroll.<YOURNAME>.workers.dev"; // <-- set this
+const https://st2s-enroll.a-hashem.workers.dev/  = "https://st2s-enroll.<YOURNAME>.workers.dev"; // <-- set this
 
 function auth(){ const t=document.getElementById('tok').value.trim(); return t?{'authorization':'Bearer '+t}:{ }; }
-async function loadCounts(){ const j = await (await fetch(API_BASE+'/api/counters')).json(); document.getElementById('counts').textContent=JSON.stringify(j,null,2); }
+async function loadCounts(){ const j = await (await fetch(https://st2s-enroll.a-hashem.workers.dev/ +'/api/counters')).json(); document.getElementById('counts').textContent=JSON.stringify(j,null,2); }
 async function loadEnrollees(){
-  const r = await fetch(API_BASE+'/api/admin/enrollees',{headers:{...auth()}});
+  const r = await fetch(https://st2s-enroll.a-hashem.workers.dev/ +'/api/admin/enrollees',{headers:{...auth()}});
   if(r.status===401){ alert('Bad token'); return; }
   const j = await r.json(); const tb = document.getElementById('rows'); tb.innerHTML="";
   j.forEach(e=>{
@@ -70,7 +70,7 @@ async function loadEnrollees(){
     tb.appendChild(tr);
   });
 }
-async function adj(mc,delta){ await fetch(API_BASE+'/api/admin/counter/adjust',{method:'POST',headers:{'content-type':'application/json',...auth()},body:JSON.stringify({mc,delta})}); loadCounts(); }
+async function adj(mc,delta){ await fetch(https://st2s-enroll.a-hashem.workers.dev/ +'/api/admin/counter/adjust',{method:'POST',headers:{'content-type':'application/json',...auth()},body:JSON.stringify({mc,delta})}); loadCounts(); }
 
 document.getElementById('load').onclick = ()=>{ loadCounts(); loadEnrollees(); };
 document.getElementById('opmMinus').onclick=()=>adj('OPM',-1);
