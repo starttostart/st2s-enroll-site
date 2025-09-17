@@ -126,7 +126,7 @@ ol.steps{margin:8px 0 0 18px;color:var(--muted);font-size:14px}
 </div>
 
 <script>
-const https://st2s-enroll.a-hashem.workers.dev/  = "https://st2s-enroll.<YOURNAME>.workers.dev"; // <-- set this
+const API_BASE/  = "https://st2s-enroll.<YOURNAME>.workers.dev"; // <-- set this
 const MC_LABELS = {
   OPM: "Occasional Project Manager Masterclass",
   AGP: "Agile PMO Transformation Masterclass for IT Executives",
@@ -146,7 +146,7 @@ function seatPrice(mc, seat){
 }
 
 async function loadCounters(){
-  const r = await fetch(https://st2s-enroll.a-hashem.workers.dev/ +"/api/counters"); const j = await r.json();
+  const r = await fetch(API_BASE/ +"/api/counters"); const j = await r.json();
   cards.innerHTML=""; ["OPM","AGP","SSS"].forEach(mc=>{
     const count = j[mc]||0, next=count+1, price=seatPrice(mc,next);
     const freeLeft = Math.max(25-count,0); const toNext = count<40 ? (count<25? 25-count : 40-count) : 0;
@@ -183,7 +183,7 @@ function getForm(){
 document.getElementById('req').onclick = async ()=>{
   clearErr(); const f=getForm(); if(!f) return;
   try{
-    const r = await fetch(https://st2s-enroll.a-hashem.workers.dev/ +"/api/otp/request",{method:"POST",headers:{'content-type':'application/json'},body:JSON.stringify({
+    const r = await fetch(API_BASE/ +"/api/otp/request",{method:"POST",headers:{'content-type':'application/json'},body:JSON.stringify({
       mc:f.mc, first:f.first, last:f.last, email:f.email, phone:f.phone, country:"Finland",
       company:f.company, role:f.role, cohort:f.cohort, invoice:f.invoice, vat:f.vat, ref:f.ref
     })});
@@ -197,7 +197,7 @@ document.getElementById('verify').onclick = async ()=>{
   clearErr(); if(!lockId) return err("Request OTP first.");
   const f=getForm(); if(!f) return; const code=document.getElementById('otp').value.trim(); if(code.length<4) return err("Enter the OTP.");
   try{
-    const r = await fetch(https://st2s-enroll.a-hashem.workers.dev/ +"/api/otp/verify",{method:"POST",headers:{'content-type':'application/json'},body:JSON.stringify({
+    const r = await fetch(API_BASE/ +"/api/otp/verify",{method:"POST",headers:{'content-type':'application/json'},body:JSON.stringify({
       email:f.email, code, lockId, first:f.first, last:f.last, phone:f.phone, country:"Finland",
       company:f.company, role:f.role, cohort:f.cohort, invoice:f.invoice, vat:f.vat, ref:f.ref
     })});
@@ -209,6 +209,8 @@ document.getElementById('verify').onclick = async ()=>{
 
 function startTimer(){ stopTimer(); tInt=setInterval(()=>{const ms=lockUntil-Date.now(); if(ms<=0){timerEl.textContent="expired"; stopTimer();return;} const m=Math.floor(ms/60000), s=Math.floor((ms%60000)/1000); timerEl.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}, 200);}
 function stopTimer(){ if(tInt){clearInterval(tInt); tInt=null;} }
+  const API_BASE = "API_BASE";
+
 </script>
 </body>
 </html>
