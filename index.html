@@ -5,11 +5,8 @@
 <title>Start to Start — Enroll</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#0b1020; --card:#0f172a; --muted:#94a3b8; --text:#e5e7eb;
-  --accent:#22c55e; --accent-2:#3b82f6; --danger:#ef4444; --ring:#1e293b;
-}
-*{box-sizing:border-box} body{margin:0;background:radial-gradient(1200px 600px at 20% -10%, #132036 0%, transparent 60%),linear-gradient(#0a0f1e,#0a0f1e);color:var(--text);font:16px/1.55 Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
+:root{--bg:#0b1020;--card:#0f172a;--muted:#94a3b8;--text:#e5e7eb;--accent:#22c55e;--accent-2:#3b82f6;--danger:#ef4444;--ring:#1e293b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(1200px 600px at 20% -10%,#132036 0%,transparent 60%),linear-gradient(#0a0f1e,#0a0f1e);color:var(--text);font:16px/1.55 Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
 .wrap{max-width:1100px;margin:auto;padding:22px}
 h1{font-size:28px;margin:8px 0 16px 0;font-weight:800}
 .section{background:var(--card);border:1px solid var(--ring);border-radius:16px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
@@ -28,9 +25,7 @@ label{display:block;font-size:12px;color:#cbd5e1;margin:0 0 6px 0}
 input,select{width:100%;padding:12px;border-radius:12px;border:1px solid #22304d;background:#0b1222;color:var(--text);outline:none}
 input:focus,select:focus{box-shadow:0 0 0 3px rgba(59,130,246,.25)}
 button{background:var(--accent-2);border:1px solid #1e3a8a;color:white;padding:11px 14px;border-radius:12px;cursor:pointer;font-weight:600}
-button.secondary{background:#1f2937;border:1px solid #334155}
 .note{margin-top:8px;font-size:12px;color:var(--muted)}
-.timer{font-weight:800}
 .err{color:var(--danger);font-size:13px;margin-top:8px}
 .hr{height:1px;background:#1f2a44;margin:14px 0}
 ol.steps{margin:8px 0 0 18px;color:var(--muted);font-size:14px}
@@ -41,30 +36,21 @@ ol.steps{margin:8px 0 0 18px;color:var(--muted);font-size:14px}
 <div class="wrap">
   <h1>Enroll in a Start to Start Masterclass</h1>
 
-  <!-- counters -->
-  <section class="section">
-    <div class="grid" id="cards"></div>
-  </section>
-
+  <section class="section"><div class="grid" id="cards"></div></section>
   <div style="height:14px"></div>
 
-  <!-- form -->
   <section class="section">
     <div class="row">
       <h2 style="margin:0;font-size:18px">Reserve your seat</h2>
-      <div>
-        <span class="badge">10-minute price lock</span>
-        <span class="badge">Timer <span id="timer">—</span></span>
-      </div>
+      <div><span class="badge">10-minute price lock</span><span class="badge">Timer <span id="timer">—</span></span></div>
     </div>
-
     <div class="hr"></div>
 
     <p class="help"><b>How this works</b></p>
     <ol class="steps">
       <li>Select a masterclass and enter your work details.</li>
       <li>Click <b>Request OTP</b>. We lock your price for 10 minutes and email a 6-digit code.</li>
-      <li>Enter the OTP and click <b>Verify & Enroll</b>. Your seat number and price are confirmed.</li>
+      <li>Enter the OTP and click <b>Verify & Enroll</b>.</li>
       <li>Support: <b>+358 46 889 3189</b>.</li>
     </ol>
 
@@ -81,11 +67,10 @@ ol.steps{margin:8px 0 0 18px;color:var(--muted);font-size:14px}
 
       <div><label>First name</label><input name="first" required></div>
       <div><label>Last name</label><input name="last" required></div>
-
       <div><label>Work email</label><input name="email" type="email" required></div>
       <div><label>Confirm email</label><input name="email2" type="email" required></div>
-
       <div><label>Mobile phone (international format)</label><input name="phone" placeholder="+358…" required></div>
+
       <div>
         <label>Country</label>
         <input value="Finland" disabled>
@@ -95,28 +80,18 @@ ol.steps{margin:8px 0 0 18px;color:var(--muted);font-size:14px}
 
       <div><label>Company</label><input name="company"></div>
       <div><label>Role / seniority</label><input name="role"></div>
-
       <div><label>Preferred cohort month</label><input name="cohort" type="month"></div>
-      <div><label>Invoice entity</label>
-        <select name="invoice"><option value="self">Self</option><option value="company">Company</option></select>
-      </div>
-
+      <div><label>Invoice entity</label><select name="invoice"><option value="self">Self</option><option value="company">Company</option></select></div>
       <div><label>VAT ID</label><input name="vat"></div>
       <div><label>Referral code</label><input name="ref"></div>
 
       <div class="full"><label><input type="checkbox" id="consent" required> I agree to Terms and Privacy</label></div>
 
-      <div class="full">
-        <button type="button" id="req">Request OTP</button>
-        <span class="note">Price locks when OTP is sent.</span>
-      </div>
+      <div class="full"><button type="button" id="req">Request OTP</button><span class="note"> Price locks when OTP is sent.</span></div>
 
       <div id="otpBox" class="full" style="display:none">
         <label>Enter OTP</label>
-        <div class="row" style="gap:8px">
-          <input id="otp" inputmode="numeric" pattern="[0-9]*" placeholder="6-digit code" style="flex:1">
-          <button type="button" id="verify">Verify & Enroll</button>
-        </div>
+        <div class="row" style="gap:8px"><input id="otp" inputmode="numeric" pattern="[0-9]*" placeholder="6-digit code" style="flex:1"><button type="button" id="verify">Verify & Enroll</button></div>
         <div class="note">Didn’t get the code? Check spam, then request again.</div>
       </div>
 
@@ -126,7 +101,8 @@ ol.steps{margin:8px 0 0 18px;color:var(--muted);font-size:14px}
 </div>
 
 <script>
-const API_BASE/  = "https://st2s-enroll.<YOURNAME>.workers.dev"; // <-- set this
+const API_BASE = "https://st2s-enroll.a-hashem.workers.dev";
+
 const MC_LABELS = {
   OPM: "Occasional Project Manager Masterclass",
   AGP: "Agile PMO Transformation Masterclass for IT Executives",
@@ -137,16 +113,14 @@ const cards = document.getElementById('cards'); const timerEl=document.getElemen
 let lockId=null, lockUntil=null, tInt=null;
 
 function fmtEUR(c){ return "€"+Math.round(c/100); }
-
 function seatPrice(mc, seat){
   const cfg = {OPM:[100,499,499], AGP:[300,999,999], SSS:[100,599,599]}[mc];
   if(seat<=25) return 0;
   if(seat<=40) return Math.round(cfg[0] + (seat-25)*(cfg[1]-cfg[0])/15)*100;
   return cfg[2]*100;
 }
-
 async function loadCounters(){
-  const r = await fetch(API_BASE/ +"/api/counters"); const j = await r.json();
+  const r = await fetch(API_BASE+"/api/counters"); const j = await r.json();
   cards.innerHTML=""; ["OPM","AGP","SSS"].forEach(mc=>{
     const count = j[mc]||0, next=count+1, price=seatPrice(mc,next);
     const freeLeft = Math.max(25-count,0); const toNext = count<40 ? (count<25? 25-count : 40-count) : 0;
@@ -156,7 +130,7 @@ async function loadCounters(){
     div.innerHTML = `
       <h3>${MC_LABELS[mc]}</h3>
       <div class="row"><div class="badge">Enrolled: ${count}</div><div class="price">${fmtEUR(price)}</div></div>
-      <div class="progress" aria-label="seats progress"><div class="fill" style="width:${pct}%"></div></div>
+      <div class="progress"><div class="fill" style="width:${pct}%"></div></div>
       <div class="row" style="margin-top:6px">
         <span class="badge">${freeLeft} free left</span>
         <span class="badge">${toNext} to next price</span>
@@ -167,8 +141,6 @@ async function loadCounters(){
 loadCounters();
 
 function err(t){ document.getElementById('err').textContent=t||""; }
-function clearErr(){ err(""); }
-
 function getForm(){
   const f = Object.fromEntries(new FormData(document.getElementById('f')).entries());
   if(!f.mc) return err("Select a masterclass."), null;
@@ -181,9 +153,9 @@ function getForm(){
 }
 
 document.getElementById('req').onclick = async ()=>{
-  clearErr(); const f=getForm(); if(!f) return;
+  err(""); const f=getForm(); if(!f) return;
   try{
-    const r = await fetch(API_BASE/ +"/api/otp/request",{method:"POST",headers:{'content-type':'application/json'},body:JSON.stringify({
+    const r = await fetch(API_BASE+"/api/otp/request",{method:"POST",headers:{'content-type':'application/json'},body:JSON.stringify({
       mc:f.mc, first:f.first, last:f.last, email:f.email, phone:f.phone, country:"Finland",
       company:f.company, role:f.role, cohort:f.cohort, invoice:f.invoice, vat:f.vat, ref:f.ref
     })});
@@ -194,23 +166,21 @@ document.getElementById('req').onclick = async ()=>{
 };
 
 document.getElementById('verify').onclick = async ()=>{
-  clearErr(); if(!lockId) return err("Request OTP first.");
+  err(""); if(!lockId) return err("Request OTP first.");
   const f=getForm(); if(!f) return; const code=document.getElementById('otp').value.trim(); if(code.length<4) return err("Enter the OTP.");
   try{
-    const r = await fetch(API_BASE/ +"/api/otp/verify",{method:"POST",headers:{'content-type':'application/json'},body:JSON.stringify({
+    const r = await fetch(API_BASE+"/api/otp/verify",{method:"POST",headers:{'content-type':'application/json'},body:JSON.stringify({
       email:f.email, code, lockId, first:f.first, last:f.last, phone:f.phone, country:"Finland",
       company:f.company, role:f.role, cohort:f.cohort, invoice:f.invoice, vat:f.vat, ref:f.ref
     })});
     const j = await r.json(); if(!j.ok) return err(j.error||"Verification failed.");
     alert(`Enrollment confirmed\n${MC_LABELS[f.mc]}\nSeat #${j.seat}\nPrice ${fmtEUR(j.price_cents)}`);
-    lockId=null; stopTimer(); timerEl.textContent="—"; document.getElementById('f').reset(); document.getElementById('otpBox').style.display="none"; loadCounters();
+    lockId=null; stopTimer(); document.getElementById('timer').textContent="—"; document.getElementById('f').reset(); document.getElementById('otpBox').style.display="none"; loadCounters();
   }catch(e){ err("Network error."); }
 };
 
-function startTimer(){ stopTimer(); tInt=setInterval(()=>{const ms=lockUntil-Date.now(); if(ms<=0){timerEl.textContent="expired"; stopTimer();return;} const m=Math.floor(ms/60000), s=Math.floor((ms%60000)/1000); timerEl.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}, 200);}
-function stopTimer(){ if(tInt){clearInterval(tInt); tInt=null;} }
-  const API_BASE = "API_BASE";
-
+function startTimer(){ stopTimer(); tInt=setInterval(()=>{const ms=lockUntil-Date.now(); if(ms<=0){document.getElementById('timer').textContent="expired"; stopTimer();return;} const m=Math.floor(ms/60000), s=Math.floor((ms%60000)/1000); document.getElementById('timer').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;},200)}
+function stopTimer(){ if(tInt){clearInterval(tInt); tInt=null} }
 </script>
 </body>
 </html>
