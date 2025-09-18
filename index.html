@@ -46,7 +46,7 @@
         </section>
 
         <!-- Enrollment Form Section -->
-        <section class="bg-gray-800 p-6 rounded-2xl border border-gray-700 shadow-2xl">
+        <section id="enrollment-section" class="bg-gray-800/50 rounded-xl border border-gray-700 p-6 md:p-8">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
                 <div>
                     <h2 class="text-2xl font-bold text-white">Reserve Your Seat</h2>
@@ -123,11 +123,12 @@
                 <div id="status-message" class="mt-4 text-center text-sm min-h-[20px]"></div>
             </form>
         </section>
-
     </div>
 
     <script>
-        const API_BASE = "https://st2s-enroll.a-hashem.workers.dev"; // Your worker URL
+        const API_BASE = "https://st2s-enroll-worker.a-hashem.workers.dev"; // Your worker URL
+        
+        // This object was fixed. The stray HTML was removed.
         const COURSE_DETAILS = {
             "OPM": { name: "Occasional Project Manager Masterclass" },
             "AGP": { name: "Agile PMO Transformation Masterclass" },
@@ -271,13 +272,15 @@
                     body: JSON.stringify({
                         email: formData.email,
                         courseId: formData.mc,
-                        payload: formData // Send all form data
+                        fullName: formData.full_name, // Corrected field name
+                        phone: formData.phone,
+                        company: formData.company,
+                        role: formData.role
                     })
                 });
                 const result = await response.json();
-                if (!response.ok || !result.ok) throw new Error(result.error || 'Failed to send OTP.');
+                if (!response.ok || !result.success) throw new Error(result.message || 'Failed to send OTP.');
                 
-                priceLockId = result.lockId;
                 priceLockUntil = new Date(result.lockExpiresAt).getTime();
                 
                 setStatus('OTP sent to your email. Please check your inbox.', false);
@@ -309,12 +312,13 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        lockId: priceLockId,
-                        otp: code
+                        email: formData.email,
+                        otp: code,
+                        courseId: formData.mc
                     })
                 });
                 const result = await response.json();
-                if (!response.ok || !result.ok) throw new Error(result.error || 'Verification failed.');
+                if (!response.ok || !result.success) throw new Error(result.message || 'Verification failed.');
                 
                 stopTimer();
                 form.reset();
@@ -324,7 +328,7 @@
                 requestOtpBtn.textContent = 'Request OTP to Lock Price';
                 timerEl.textContent = '10:00';
                 
-                alert(`Success! Enrollment confirmed for ${COURSE_DETAILS[result.enrollment.courseId].name} at €${result.enrollment.priceAtLock}. A confirmation email has been sent.`);
+                alert(`Success! Enrollment confirmed for ${COURSE_DETAILS[result.enrollment.course].name} at €${result.enrollment.price}. A confirmation email has been sent.`);
                 fetchCounters(); // Refresh cards with new count
                 
             } catch (error) {
