@@ -1,186 +1,345 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Start to Start — Enroll</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#0b1020;--card:#0f172a;--muted:#94a3b8;--text:#e5e7eb;--accent:#22c55e;--accent-2:#3b82f6;--danger:#ef4444;--ring:#1e293b}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(1200px 600px at 20% -10%,#132036 0%,transparent 60%),linear-gradient(#0a0f1e,#0a0f1e);color:var(--text);font:16px/1.55 Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
-.wrap{max-width:1100px;margin:auto;padding:22px}
-h1{font-size:28px;margin:8px 0 16px 0;font-weight:800}
-.section{background:var(--card);border:1px solid var(--ring);border-radius:16px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-@media (max-width:900px){.grid{grid-template-columns:1fr}}
-.card h3{margin:0 0 6px 0;font-size:16px;font-weight:800}
-.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.badge{display:inline-block;padding:3px 10px;border-radius:999px;border:1px solid #263046;color:#cbd5e1;font-size:12px}
-.price{font-weight:800;font-size:22px}
-.progress{height:10px;background:#0b1324;border:1px solid #1e2a45;border-radius:20px;overflow:hidden}
-.fill{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);width:0%;transition:width .7s ease}
-.help{font-size:12px;color:var(--muted)}
-.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
-.form .full{grid-column:1/-1}
-label{display:block;font-size:12px;color:#cbd5e1;margin:0 0 6px 0}
-input,select{width:100%;padding:12px;border-radius:12px;border:1px solid #22304d;background:#0b1222;color:var(--text);outline:none}
-input:focus,select:focus{box-shadow:0 0 0 3px rgba(59,130,246,.25)}
-button{background:var(--accent-2);border:1px solid #1e3a8a;color:white;padding:11px 14px;border-radius:12px;cursor:pointer;font-weight:600}
-.note{margin-top:8px;font-size:12px;color:var(--muted)}
-.err{color:var(--danger);font-size:13px;margin-top:8px}
-.hr{height:1px;background:#1f2a44;margin:14px 0}
-ol.steps{margin:8px 0 0 18px;color:var(--muted);font-size:14px}
-.small{font-size:12px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start to Start — Masterclass Enrollment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .progress-bar-container {
+            position: relative;
+        }
+        .milestone {
+            position: absolute;
+            top: -25px;
+            font-size: 10px;
+            transform: translateX(-50%);
+            color: #9ca3af;
+        }
+        .milestone::after {
+            content: '';
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            width: 2px;
+            height: 10px;
+            background-color: #4b5563;
+            transform: translateX(-50%);
+        }
+    </style>
 </head>
-<body>
-<div class="wrap">
-  <h1>Enroll in a Start to Start Masterclass</h1>
+<body class="bg-gray-900 text-gray-200">
 
-  <section class="section"><div class="grid" id="cards"></div></section>
-  <div style="height:14px"></div>
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white">Masterclass Enrollment</h1>
+            <p class="text-gray-400 mt-2">Secure your seat now. Prices adjust based on demand.</p>
+        </header>
 
-  <section class="section">
-    <div class="row">
-      <h2 style="margin:0;font-size:18px">Reserve your seat</h2>
-      <div><span class="badge">10-minute price lock</span><span class="badge">Timer <span id="timer">—</span></span></div>
+        <!-- Course Cards -->
+        <section id="course-cards" class="grid md:grid-cols-3 gap-6 mb-10">
+            <!-- Course cards will be dynamically inserted here -->
+        </section>
+
+        <!-- Enrollment Form Section -->
+        <section class="bg-gray-800 p-6 rounded-2xl border border-gray-700 shadow-2xl">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">Reserve Your Seat</h2>
+                    <p class="text-gray-400">Complete the form to lock in your price.</p>
+                </div>
+                <div class="mt-4 md:mt-0 text-right">
+                    <span class="bg-blue-600 text-white text-xs font-semibold mr-2 px-3 py-1.5 rounded-full">Price Lock Timer: <span id="timer" class="font-mono">10:00</span></span>
+                </div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="bg-gray-900/50 p-4 rounded-lg border border-gray-700 mb-6">
+                <h3 class="font-bold text-lg text-white mb-2">How It Works</h3>
+                <ol class="list-decimal list-inside text-gray-300 space-y-2">
+                    <li><span class="font-semibold">Step 1:</span> Enter your details and select your masterclass.</li>
+                    <li><span class="font-semibold">Step 2:</span> Request an OTP. Your price will be locked for 10 minutes while we email you a code.</li>
+                    <li><span class="font-semibold">Step 3:</span> Verify the OTP to confirm your enrollment at the locked price.</li>
+                    <li><span class="font-semibold">Step 4:</span> Proceed to payment to secure your seat permanently.</li>
+                </ol>
+            </div>
+
+
+            <form id="enrollment-form" novalidate>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Course Selection -->
+                    <div class="md:col-span-2">
+                        <label for="mc" class="block mb-2 text-sm font-medium text-gray-300">Masterclass Selection</label>
+                        <select name="mc" id="mc" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3" required>
+                            <option value="" disabled selected>-- Select a Masterclass --</option>
+                            <option value="OPM">Occasional Project Manager Masterclass</option>
+                            <option value="AGP">Agile PMO Transformation Masterclass</option>
+                            <option value="SAP">Streets-Smart SAP Project Management</option>
+                        </select>
+                    </div>
+
+                    <!-- Personal Details -->
+                    <input type="text" name="full_name" placeholder="Full Name" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg block w-full p-3" required>
+                    <input type="email" name="email" placeholder="Work Email" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg block w-full p-3" required>
+                    <input type="tel" name="phone" placeholder="Phone (e.g., +358...)" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg block w-full p-3" required>
+                    <div>
+                        <input type="text" name="country" value="Finland" disabled class="bg-gray-600 border border-gray-500 text-gray-400 text-sm rounded-lg block w-full p-3 cursor-not-allowed">
+                        <p class="text-xs text-gray-500 mt-1">Enrollment is currently limited to Finland.</p>
+                    </div>
+                    <input type="text" name="company" placeholder="Company" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg block w-full p-3">
+                    <input type="text" name="role" placeholder="Your Role" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg block w-full p-3">
+
+                    <!-- Consent -->
+                    <div class="md:col-span-2 flex items-center">
+                        <input id="consent" name="consent" type="checkbox" required class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600">
+                        <label for="consent" class="ml-2 text-sm font-medium text-gray-300">I agree to the <a href="#" class="text-blue-500 hover:underline">Terms of Service</a> and <a href="#" class="text-blue-500 hover:underline">Privacy Policy</a>.</label>
+                    </div>
+                </div>
+
+                <!-- OTP & Submission -->
+                <div class="mt-6 border-t border-gray-700 pt-6">
+                    <div id="otp-request-section">
+                        <button type="button" id="request-otp-btn" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-3 text-center transition-all duration-300">
+                            Request OTP to Lock Price
+                        </button>
+                    </div>
+
+                    <div id="otp-verify-section" class="hidden mt-4">
+                        <div class="flex gap-4 items-center">
+                            <input type="text" id="otp-input" placeholder="6-Digit Code" class="flex-grow bg-gray-700 border border-gray-600 text-white text-sm rounded-lg p-3 font-mono" maxlength="6">
+                            <button type="button" id="verify-otp-btn" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-3 transition-all duration-300">
+                                Verify & Enroll
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-2 text-center">A code was sent to your email. Didn't receive it? <a href="#" id="resend-otp" class="text-blue-500 hover:underline">Resend OTP</a>.</p>
+                    </div>
+                </div>
+                
+                <!-- Status/Error Message -->
+                <div id="status-message" class="mt-4 text-center text-sm min-h-[20px]"></div>
+            </form>
+        </section>
+
     </div>
-    <div class="hr"></div>
 
-    <p class="help"><b>How this works</b></p>
-    <ol class="steps">
-      <li>Select a masterclass and enter your work details.</li>
-      <li>Click <b>Request OTP</b>. We lock your price for 10 minutes and email a 6-digit code.</li>
-      <li>Enter the OTP and click <b>Verify & Enroll</b>.</li>
-      <li>Support: <b>+358 46 889 3189</b>.</li>
-    </ol>
+    <script>
+        const API_BASE = "https://st2s-enroll.a-hashem.workers.dev"; // Your worker URL
+        const COURSE_DETAILS = {
+            "OPM": { name: "Occasional Project Manager Masterclass" },
+            "AGP": { name: "Agile PMO Transformation Masterclass" },
+            "SAP": { name: "Streets-Smart SAP Project Management" }
+        };
 
-    <form id="f" class="form" novalidate>
-      <div class="full">
-        <label>Masterclass</label>
-        <select name="mc" required>
-          <option value="">Select</option>
-          <option value="OPM">Occasional Project Manager Masterclass</option>
-          <option value="AGP">Agile PMO Transformation Masterclass for IT Executives</option>
-          <option value="SSS">Streets-Smart SAP Project Management</option>
-        </select>
-      </div>
+        // DOM Elements
+        const courseCardsContainer = document.getElementById('course-cards');
+        const timerEl = document.getElementById('timer');
+        const form = document.getElementById('enrollment-form');
+        const requestOtpBtn = document.getElementById('request-otp-btn');
+        const otpRequestSection = document.getElementById('otp-request-section');
+        const otpVerifySection = document.getElementById('otp-verify-section');
+        const verifyOtpBtn = document.getElementById('verify-otp-btn');
+        const otpInput = document.getElementById('otp-input');
+        const statusMessageEl = document.getElementById('status-message');
 
-      <div><label>First name</label><input name="first" required></div>
-      <div><label>Last name</label><input name="last" required></div>
-      <div><label>Work email</label><input name="email" type="email" required></div>
-      <div><label>Confirm email</label><input name="email2" type="email" required></div>
-      <div><label>Mobile phone (international format)</label><input name="phone" placeholder="+358…" required></div>
+        let priceLockId = null;
+        let priceLockUntil = null;
+        let timerInterval = null;
 
-      <div>
-        <label>Country</label>
-        <input value="Finland" disabled>
-        <input type="hidden" name="country" value="Finland">
-        <div class="small help">Event location is Finland. Only Finland is available.</div>
-      </div>
+        // --- Pricing Logic (Client-side for display) ---
+        function calculatePrice(courseId, seat) {
+            const rules = {
+                OPM: { base: 100, max: 499, final: 499 },
+                AGP: { base: 300, max: 999, final: 999 },
+                SAP: { base: 100, max: 599, final: 599 }
+            };
+            const rule = rules[courseId];
+            if (!rule) return 0;
+            if (seat <= 25) return 0;
+            if (seat <= 40) return Math.round(rule.base + (seat - 26) * (rule.max - rule.base) / 14);
+            return rule.final;
+        }
+        
+        // --- UI Update Functions ---
+        function renderCourseCards(counts) {
+            courseCardsContainer.innerHTML = '';
+            for (const courseId in COURSE_DETAILS) {
+                const count = counts[courseId] || 0;
+                const nextSeat = count + 1;
+                const price = calculatePrice(courseId, nextSeat);
+                const freeSeatsLeft = Math.max(0, 25 - count);
+                const seatsToNextIncrease = count < 25 ? 25 - count + 1 : (count < 40 ? 40 - count + 1 : 0);
+                const progress = Math.min((count / 40) * 100, 100);
 
-      <div><label>Company</label><input name="company"></div>
-      <div><label>Role / seniority</label><input name="role"></div>
-      <div><label>Preferred cohort month</label><input name="cohort" type="month"></div>
-      <div><label>Invoice entity</label><select name="invoice"><option value="self">Self</option><option value="company">Company</option></select></div>
-      <div><label>VAT ID</label><input name="vat"></div>
-      <div><label>Referral code</label><input name="ref"></div>
+                const card = `
+                    <div class="bg-gray-800 p-5 rounded-xl border border-gray-700">
+                        <h3 class="font-bold text-lg text-white">${COURSE_DETAILS[courseId].name}</h3>
+                        <div class="flex justify-between items-baseline my-3">
+                            <span class="text-3xl font-extrabold text-white">€${price}</span>
+                            <span class="text-sm text-gray-400">Seat #${nextSeat}</span>
+                        </div>
+                        <div class="progress-bar-container w-full bg-gray-700 rounded-full h-2.5 mb-8">
+                            <div class="bg-green-500 h-2.5 rounded-full" style="width: ${progress}%"></div>
+                            <div class="milestone" style="left: 62.5%;">25</div> <!-- 25/40 = 62.5% -->
+                            <div class="milestone" style="left: 100%;">40</div>
+                        </div>
+                        <div class="text-xs text-gray-400 flex justify-between">
+                            <span>${freeSeatsLeft} free seats left</span>
+                            <span>${seatsToNextIncrease > 0 ? `${seatsToNextIncrease} to next price` : 'Fixed price'}</span>
+                        </div>
+                    </div>
+                `;
+                courseCardsContainer.innerHTML += card;
+            }
+        }
 
-      <div class="full"><label><input type="checkbox" id="consent" required> I agree to Terms and Privacy</label></div>
+        function setStatus(message, isError = false) {
+            statusMessageEl.textContent = message;
+            statusMessageEl.className = `mt-4 text-center text-sm min-h-[20px] ${isError ? 'text-red-400' : 'text-green-400'}`;
+        }
+        
+        function startTimer() {
+            stopTimer();
+            timerInterval = setInterval(() => {
+                const now = Date.now();
+                const remaining = priceLockUntil - now;
+                if (remaining <= 0) {
+                    stopTimer();
+                    timerEl.textContent = "EXPIRED";
+                    setStatus("Your price lock has expired. Please request a new OTP.", true);
+                    // Optionally reset the form state
+                    otpVerifySection.classList.add('hidden');
+                    otpRequestSection.classList.remove('hidden');
+                    requestOtpBtn.disabled = false;
+                    requestOtpBtn.textContent = 'Request OTP to Lock Price';
+                    return;
+                }
+                const minutes = Math.floor(remaining / 60000);
+                const seconds = Math.floor((remaining % 60000) / 1000);
+                timerEl.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }, 1000);
+        }
 
-      <div class="full"><button type="button" id="req">Request OTP</button><span class="note"> Price locks when OTP is sent.</span></div>
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+        
+        function validateForm() {
+            const data = Object.fromEntries(new FormData(form).entries());
+            if (!data.mc) { setStatus("Please select a masterclass.", true); return null; }
+            if (!data.full_name.trim()) { setStatus("Full name is required.", true); return null; }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { setStatus("Please enter a valid work email.", true); return null; }
+            if (!/^\+?[1-9]\d{1,14}$/.test(data.phone)) { setStatus("Please enter a valid phone number.", true); return null; }
+            if (!data.consent) { setStatus("You must agree to the terms.", true); return null; }
+            setStatus('');
+            return data;
+        }
 
-      <div id="otpBox" class="full" style="display:none">
-        <label>Enter OTP</label>
-        <div class="row" style="gap:8px"><input id="otp" inputmode="numeric" pattern="[0-9]*" placeholder="6-digit code" style="flex:1"><button type="button" id="verify">Verify & Enroll</button></div>
-        <div class="note">Didn’t get the code? Check spam, then request again.</div>
-      </div>
+        // --- API Calls ---
+        async function fetchCounters() {
+            try {
+                const response = await fetch(`${API_BASE}/api/counters`);
+                if (!response.ok) throw new Error('Failed to fetch counts');
+                const data = await response.json();
+                // FIX: Handle both new ({ok, counts}) and old ({OPM, ...}) API response structures.
+                const countsData = data.counts || data;
+                renderCourseCards(countsData);
+            } catch (error) {
+                console.error("Error fetching counters:", error);
+                courseCardsContainer.innerHTML = `<p class="text-red-400 md:col-span-3 text-center">Could not load course data. Please try again later.</p>`;
+            }
+        }
 
-      <div id="err" class="err full"></div>
-    </form>
-  </section>
-</div>
+        async function handleRequestOtp() {
+            const formData = validateForm();
+            if (!formData) return;
 
-<script>
-const API_BASE = "https://st2s-enroll.a-hashem.workers.dev";
+            requestOtpBtn.disabled = true;
+            requestOtpBtn.textContent = 'Sending...';
+            setStatus('Requesting OTP...');
 
-const MC_LABELS = {
-  OPM: "Occasional Project Manager Masterclass",
-  AGP: "Agile PMO Transformation Masterclass for IT Executives",
-  SSS: "Streets-Smart SAP Project Management"
-};
-const PERSONAL = new Set(["gmail.com","yahoo.com","outlook.com","hotmail.com","live.com","icloud.com","proton.me","protonmail.com","gmx.com","yandex.com","aol.com","mail.com","me.com"]);
-const cards = document.getElementById('cards'); const timerEl=document.getElementById('timer');
-let lockId=null, lockUntil=null, tInt=null;
+            try {
+                const response = await fetch(`${API_BASE}/api/otp/request`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: formData.email,
+                        courseId: formData.mc,
+                        payload: formData // Send all form data
+                    })
+                });
+                const result = await response.json();
+                if (!response.ok || !result.ok) throw new Error(result.error || 'Failed to send OTP.');
+                
+                priceLockId = result.lockId;
+                priceLockUntil = new Date(result.lockExpiresAt).getTime();
+                
+                setStatus('OTP sent to your email. Please check your inbox.', false);
+                otpRequestSection.classList.add('hidden');
+                otpVerifySection.classList.remove('hidden');
+                startTimer();
+            } catch (error) {
+                setStatus(error.message, true);
+                requestOtpBtn.disabled = false;
+                requestOtpBtn.textContent = 'Request OTP to Lock Price';
+            }
+        }
+        
+        async function handleVerifyOtp() {
+            const code = otpInput.value.trim();
+            if (code.length !== 6) {
+                setStatus('Please enter the 6-digit OTP.', true);
+                return;
+            }
+            const formData = validateForm();
+            if (!formData) return;
 
-function fmtEUR(c){ return "€"+Math.round(c/100); }
-function seatPrice(mc, seat){
-  const cfg = {OPM:[100,499,499], AGP:[300,999,999], SSS:[100,599,599]}[mc];
-  if(seat<=25) return 0;
-  if(seat<=40) return Math.round(cfg[0] + (seat-25)*(cfg[1]-cfg[0])/15)*100;
-  return cfg[2]*100;
-}
-async function loadCounters(){
-  const r = await fetch(API_BASE+"/api/counters"); const j = await r.json();
-  cards.innerHTML=""; ["OPM","AGP","SSS"].forEach(mc=>{
-    const count = j[mc]||0, next=count+1, price=seatPrice(mc,next);
-    const freeLeft = Math.max(25-count,0); const toNext = count<40 ? (count<25? 25-count : 40-count) : 0;
-    const pct = Math.min(Math.round((count/40)*100),100);
-    const div = document.createElement('div');
-    div.className="section card";
-    div.innerHTML = `
-      <h3>${MC_LABELS[mc]}</h3>
-      <div class="row"><div class="badge">Enrolled: ${count}</div><div class="price">${fmtEUR(price)}</div></div>
-      <div class="progress"><div class="fill" style="width:${pct}%"></div></div>
-      <div class="row" style="margin-top:6px">
-        <span class="badge">${freeLeft} free left</span>
-        <span class="badge">${toNext} to next price</span>
-      </div>`;
-    cards.appendChild(div);
-  });
-}
-loadCounters();
+            verifyOtpBtn.disabled = true;
+            verifyOtpBtn.textContent = 'Verifying...';
+            setStatus('Confirming your enrollment...');
 
-function err(t){ document.getElementById('err').textContent=t||""; }
-function getForm(){
-  const f = Object.fromEntries(new FormData(document.getElementById('f')).entries());
-  if(!f.mc) return err("Select a masterclass."), null;
-  if(!f.first || !f.last) return err("Enter your name."), null;
-  if(!f.email || !f.email2 || f.email.toLowerCase()!==f.email2.toLowerCase()) return err("Emails must match."), null;
-  const d = f.email.split("@")[1]?.toLowerCase(); if(!d || PERSONAL.has(d)) return err("Personal email domains are blocked."), null;
-  if(!/^\+[1-9]\d{6,14}$/.test(f.phone)) return err("Use international format, e.g. +358…"), null;
-  if(!document.getElementById('consent').checked) return err("Consent required."), null;
-  return f;
-}
+            try {
+                const response = await fetch(`${API_BASE}/api/otp/verify`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        lockId: priceLockId,
+                        otp: code
+                    })
+                });
+                const result = await response.json();
+                if (!response.ok || !result.ok) throw new Error(result.error || 'Verification failed.');
+                
+                stopTimer();
+                form.reset();
+                otpVerifySection.classList.add('hidden');
+                otpRequestSection.classList.remove('hidden');
+                requestOtpBtn.disabled = false;
+                requestOtpBtn.textContent = 'Request OTP to Lock Price';
+                timerEl.textContent = '10:00';
+                
+                alert(`Success! Enrollment confirmed for ${COURSE_DETAILS[result.enrollment.courseId].name} at €${result.enrollment.priceAtLock}. A confirmation email has been sent.`);
+                fetchCounters(); // Refresh cards with new count
+                
+            } catch (error) {
+                setStatus(error.message, true);
+                verifyOtpBtn.disabled = false;
+                verifyOtpBtn.textContent = 'Verify & Enroll';
+            }
+        }
+        
+        // --- Event Listeners ---
+        requestOtpBtn.addEventListener('click', handleRequestOtp);
+        verifyOtpBtn.addEventListener('click', handleVerifyOtp);
+        document.addEventListener('DOMContentLoaded', fetchCounters);
 
-document.getElementById('req').onclick = async ()=>{
-  err(""); const f=getForm(); if(!f) return;
-  try{
-    const r = await fetch(API_BASE+"/api/otp/request",{method:"POST",headers:{'content-type':'application/json'},body:JSON.stringify({
-      mc:f.mc, first:f.first, last:f.last, email:f.email, phone:f.phone, country:"Finland",
-      company:f.company, role:f.role, cohort:f.cohort, invoice:f.invoice, vat:f.vat, ref:f.ref
-    })});
-    const j = await r.json(); if(!j.ok) return err(j.error||"Failed to send OTP");
-    lockId = j.lockId; lockUntil = Date.parse(j.lockExpiresAt);
-    document.getElementById('otpBox').style.display="block"; startTimer();
-  }catch(e){ err("Network error."); }
-};
-
-document.getElementById('verify').onclick = async ()=>{
-  err(""); if(!lockId) return err("Request OTP first.");
-  const f=getForm(); if(!f) return; const code=document.getElementById('otp').value.trim(); if(code.length<4) return err("Enter the OTP.");
-  try{
-    const r = await fetch(API_BASE+"/api/otp/verify",{method:"POST",headers:{'content-type':'application/json'},body:JSON.stringify({
-      email:f.email, code, lockId, first:f.first, last:f.last, phone:f.phone, country:"Finland",
-      company:f.company, role:f.role, cohort:f.cohort, invoice:f.invoice, vat:f.vat, ref:f.ref
-    })});
-    const j = await r.json(); if(!j.ok) return err(j.error||"Verification failed.");
-    alert(`Enrollment confirmed\n${MC_LABELS[f.mc]}\nSeat #${j.seat}\nPrice ${fmtEUR(j.price_cents)}`);
-    lockId=null; stopTimer(); document.getElementById('timer').textContent="—"; document.getElementById('f').reset(); document.getElementById('otpBox').style.display="none"; loadCounters();
-  }catch(e){ err("Network error."); }
-};
-
-function startTimer(){ stopTimer(); tInt=setInterval(()=>{const ms=lockUntil-Date.now(); if(ms<=0){document.getElementById('timer').textContent="expired"; stopTimer();return;} const m=Math.floor(ms/60000), s=Math.floor((ms%60000)/1000); document.getElementById('timer').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;},200)}
-function stopTimer(){ if(tInt){clearInterval(tInt); tInt=null} }
-</script>
+    </script>
 </body>
 </html>
+
