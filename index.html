@@ -7,29 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .progress-bar-container {
-            position: relative;
-        }
-        .milestone {
-            position: absolute;
-            top: -25px;
-            font-size: 10px;
-            transform: translateX(-50%);
-            color: #9ca3af;
-        }
-        .milestone::after {
-            content: '';
-            position: absolute;
-            bottom: -25px;
-            left: 50%;
-            width: 2px;
-            height: 10px;
-            background-color: #4b5563;
-            transform: translateX(-50%);
-        }
+        body { font-family: 'Inter', sans-serif; }
+        .progress-bar-container { position: relative; }
+        .milestone { position: absolute; top: -25px; font-size: 10px; transform: translateX(-50%); color: #9ca3af; }
+        .milestone::after { content: ''; position: absolute; bottom: -25px; left: 50%; width: 2px; height: 10px; background-color: #4b5563; transform: translateX(-50%); }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
@@ -40,12 +21,10 @@
             <p class="text-gray-400 mt-2">Secure your seat now. Prices adjust based on demand.</p>
         </header>
 
-        <!-- Course Cards -->
         <section id="course-cards" class="grid md:grid-cols-3 gap-6 mb-10">
-            <!-- Course cards will be dynamically inserted here -->
+            <!-- This will be filled dynamically. If it's empty, an error message will be shown here. -->
         </section>
 
-        <!-- Enrollment Form Section -->
         <section id="enrollment-section" class="bg-gray-800/50 rounded-xl border border-gray-700 p-6 md:p-8">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
                 <div>
@@ -57,21 +36,18 @@
                 </div>
             </div>
 
-            <!-- Instructions -->
             <div class="bg-gray-900/50 p-4 rounded-lg border border-gray-700 mb-6">
                 <h3 class="font-bold text-lg text-white mb-2">How It Works</h3>
                 <ol class="list-decimal list-inside text-gray-300 space-y-2">
-                    <li><span class="font-semibold">Step 1:</span> Enter your details and select your masterclass.</li>
-                    <li><span class="font-semibold">Step 2:</span> Request an OTP. Your price will be locked for 10 minutes while we email you a code.</li>
-                    <li><span class="font-semibold">Step 3:</span> Verify the OTP to confirm your enrollment at the locked price.</li>
-                    <li><span class="font-semibold">Step 4:</span> Proceed to payment to secure your seat permanently.</li>
+                    <li><b>Step 1:</b> Enter your details and select your masterclass.</li>
+                    <li><b>Step 2:</b> Request an OTP. Your price will be locked for 10 minutes.</li>
+                    <li><b>Step 3:</b> Verify the OTP to confirm your enrollment.</li>
+                    <li><b>Step 4:</b> Proceed to payment to secure your seat.</li>
                 </ol>
             </div>
 
-
             <form id="enrollment-form" novalidate>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Course Selection -->
                     <div class="md:col-span-2">
                         <label for="mc" class="block mb-2 text-sm font-medium text-gray-300">Masterclass Selection</label>
                         <select name="mc" id="mc" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3" required>
@@ -82,60 +58,47 @@
                         </select>
                     </div>
 
-                    <!-- Personal Details -->
                     <input type="text" name="full_name" placeholder="Full Name" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg block w-full p-3" required>
                     <input type="email" name="email" placeholder="Work Email" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg block w-full p-3" required>
                     <input type="tel" name="phone" placeholder="Phone (e.g., +358...)" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg block w-full p-3" required>
                     <div>
-                        <input type="text" name="country" value="Finland" disabled class="bg-gray-600 border border-gray-500 text-gray-400 text-sm rounded-lg block w-full p-3 cursor-not-allowed">
+                        <input type="text" value="Finland" disabled class="bg-gray-600 border border-gray-500 text-gray-400 text-sm rounded-lg block w-full p-3 cursor-not-allowed">
                         <p class="text-xs text-gray-500 mt-1">Enrollment is currently limited to Finland.</p>
                     </div>
                     <input type="text" name="company" placeholder="Company" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg block w-full p-3">
                     <input type="text" name="role" placeholder="Your Role" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg block w-full p-3">
 
-                    <!-- Consent -->
                     <div class="md:col-span-2 flex items-center">
                         <input id="consent" name="consent" type="checkbox" required class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600">
                         <label for="consent" class="ml-2 text-sm font-medium text-gray-300">I agree to the <a href="#" class="text-blue-500 hover:underline">Terms of Service</a> and <a href="#" class="text-blue-500 hover:underline">Privacy Policy</a>.</label>
                     </div>
                 </div>
 
-                <!-- OTP & Submission -->
                 <div class="mt-6 border-t border-gray-700 pt-6">
                     <div id="otp-request-section">
-                        <button type="button" id="request-otp-btn" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-3 text-center transition-all duration-300">
-                            Request OTP to Lock Price
-                        </button>
+                        <button type="button" id="request-otp-btn" class="w-full text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-3 text-center">Request OTP to Lock Price</button>
                     </div>
-
                     <div id="otp-verify-section" class="hidden mt-4">
                         <div class="flex gap-4 items-center">
                             <input type="text" id="otp-input" placeholder="6-Digit Code" class="flex-grow bg-gray-700 border border-gray-600 text-white text-sm rounded-lg p-3 font-mono" maxlength="6">
-                            <button type="button" id="verify-otp-btn" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-3 transition-all duration-300">
-                                Verify & Enroll
-                            </button>
+                            <button type="button" id="verify-otp-btn" class="text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg text-sm px-5 py-3">Verify & Enroll</button>
                         </div>
-                        <p class="text-xs text-gray-400 mt-2 text-center">A code was sent to your email. Didn't receive it? <a href="#" id="resend-otp" class="text-blue-500 hover:underline">Resend OTP</a>.</p>
                     </div>
                 </div>
                 
-                <!-- Status/Error Message -->
                 <div id="status-message" class="mt-4 text-center text-sm min-h-[20px]"></div>
             </form>
         </section>
     </div>
 
     <script>
-        const API_BASE = "https://st2s-enroll-worker.a-hashem.workers.dev"; // Your worker URL
-        
-        // This object was fixed. The stray HTML was removed.
+        const API_BASE = "https://st2s-enroll-worker.a-hashem.workers.dev";
         const COURSE_DETAILS = {
             "OPM": { name: "Occasional Project Manager Masterclass" },
             "AGP": { name: "Agile PMO Transformation Masterclass" },
             "SAP": { name: "Streets-Smart SAP Project Management" }
         };
 
-        // DOM Elements
         const courseCardsContainer = document.getElementById('course-cards');
         const timerEl = document.getElementById('timer');
         const form = document.getElementById('enrollment-form');
@@ -146,11 +109,9 @@
         const otpInput = document.getElementById('otp-input');
         const statusMessageEl = document.getElementById('status-message');
 
-        let priceLockId = null;
         let priceLockUntil = null;
         let timerInterval = null;
 
-        // --- Pricing Logic (Client-side for display) ---
         function calculatePrice(courseId, seat) {
             const rules = {
                 OPM: { base: 100, max: 499, final: 499 },
@@ -159,20 +120,24 @@
             };
             const rule = rules[courseId];
             if (!rule) return 0;
-            if (seat <= 25) return 0;
-            if (seat <= 40) return Math.round(rule.base + (seat - 26) * (rule.max - rule.base) / 14);
+            // First 10 are free
+            if (seat <= 10) return 0;
+            // Dynamic pricing from seat 11 to 40
+            if (seat <= 40) {
+                // We scale over 30 steps (from 11 to 40)
+                return Math.round(rule.base + (seat - 11) * (rule.max - rule.base) / 29);
+            }
             return rule.final;
         }
         
-        // --- UI Update Functions ---
         function renderCourseCards(counts) {
             courseCardsContainer.innerHTML = '';
             for (const courseId in COURSE_DETAILS) {
                 const count = counts[courseId] || 0;
                 const nextSeat = count + 1;
                 const price = calculatePrice(courseId, nextSeat);
-                const freeSeatsLeft = Math.max(0, 25 - count);
-                const seatsToNextIncrease = count < 25 ? 25 - count + 1 : (count < 40 ? 40 - count + 1 : 0);
+                const freeSeatsLeft = Math.max(0, 10 - count);
+                const seatsToNextIncrease = count < 10 ? (10 - count) : (count < 40 ? 40 - count : 0);
                 const progress = Math.min((count / 40) * 100, 100);
 
                 const card = `
@@ -184,7 +149,7 @@
                         </div>
                         <div class="progress-bar-container w-full bg-gray-700 rounded-full h-2.5 mb-8">
                             <div class="bg-green-500 h-2.5 rounded-full" style="width: ${progress}%"></div>
-                            <div class="milestone" style="left: 62.5%;">25</div> <!-- 25/40 = 62.5% -->
+                            <div class="milestone" style="left: 25%;">10</div> <!-- 10/40 = 25% -->
                             <div class="milestone" style="left: 100%;">40</div>
                         </div>
                         <div class="text-xs text-gray-400 flex justify-between">
@@ -205,17 +170,13 @@
         function startTimer() {
             stopTimer();
             timerInterval = setInterval(() => {
-                const now = Date.now();
-                const remaining = priceLockUntil - now;
+                const remaining = priceLockUntil - Date.now();
                 if (remaining <= 0) {
                     stopTimer();
                     timerEl.textContent = "EXPIRED";
-                    setStatus("Your price lock has expired. Please request a new OTP.", true);
-                    // Optionally reset the form state
+                    setStatus("Price lock expired. Please request a new OTP.", true);
                     otpVerifySection.classList.add('hidden');
                     otpRequestSection.classList.remove('hidden');
-                    requestOtpBtn.disabled = false;
-                    requestOtpBtn.textContent = 'Request OTP to Lock Price';
                     return;
                 }
                 const minutes = Math.floor(remaining / 60000);
@@ -225,10 +186,8 @@
         }
 
         function stopTimer() {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = null;
         }
         
         function validateForm() {
@@ -236,24 +195,24 @@
             if (!data.mc) { setStatus("Please select a masterclass.", true); return null; }
             if (!data.full_name.trim()) { setStatus("Full name is required.", true); return null; }
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { setStatus("Please enter a valid work email.", true); return null; }
-            if (!/^\+?[1-9]\d{1,14}$/.test(data.phone)) { setStatus("Please enter a valid phone number.", true); return null; }
             if (!data.consent) { setStatus("You must agree to the terms.", true); return null; }
             setStatus('');
             return data;
         }
 
-        // --- API Calls ---
         async function fetchCounters() {
             try {
-                const response = await fetch(`${API_BASE}/api/counters`);
-                if (!response.ok) throw new Error('Failed to fetch counts');
+                const response = await fetch(`${API_BASE}/api/counters?t=${new Date().getTime()}`);
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({ message: `Server error: ${response.status}` }));
+                    throw new Error(errorData.message || 'Failed to load course data.');
+                }
                 const data = await response.json();
-                // FIX: Handle both new ({ok, counts}) and old ({OPM, ...}) API response structures.
-                const countsData = data.counts || data;
-                renderCourseCards(countsData);
+                if (!data.success) throw new Error(data.message);
+                renderCourseCards(data.counts);
             } catch (error) {
                 console.error("Error fetching counters:", error);
-                courseCardsContainer.innerHTML = `<p class="text-red-400 md:col-span-3 text-center">Could not load course data. Please try again later.</p>`;
+                courseCardsContainer.innerHTML = `<p class="text-red-400 md:col-span-3 text-center">${error.message}</p>`;
             }
         }
 
@@ -262,87 +221,66 @@
             if (!formData) return;
 
             requestOtpBtn.disabled = true;
-            requestOtpBtn.textContent = 'Sending...';
             setStatus('Requesting OTP...');
 
             try {
                 const response = await fetch(`${API_BASE}/api/otp/request`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        email: formData.email,
-                        courseId: formData.mc,
-                        fullName: formData.full_name, // Corrected field name
-                        phone: formData.phone,
-                        company: formData.company,
-                        role: formData.role
-                    })
+                    body: JSON.stringify({ email: formData.email, courseId: formData.mc, fullName: formData.full_name })
                 });
                 const result = await response.json();
-                if (!response.ok || !result.success) throw new Error(result.message || 'Failed to send OTP.');
+                if (!result.success) throw new Error(result.message);
                 
                 priceLockUntil = new Date(result.lockExpiresAt).getTime();
-                
-                setStatus('OTP sent to your email. Please check your inbox.', false);
+                setStatus('OTP sent to your email.', false);
                 otpRequestSection.classList.add('hidden');
                 otpVerifySection.classList.remove('hidden');
                 startTimer();
             } catch (error) {
-                setStatus(error.message, true);
+                setStatus(error.message || "Failed to send OTP.", true);
+            } finally {
                 requestOtpBtn.disabled = false;
-                requestOtpBtn.textContent = 'Request OTP to Lock Price';
             }
         }
         
         async function handleVerifyOtp() {
             const code = otpInput.value.trim();
-            if (code.length !== 6) {
-                setStatus('Please enter the 6-digit OTP.', true);
-                return;
-            }
+            if (code.length !== 6) return setStatus('Please enter the 6-digit OTP.', true);
             const formData = validateForm();
             if (!formData) return;
 
             verifyOtpBtn.disabled = true;
-            verifyOtpBtn.textContent = 'Verifying...';
-            setStatus('Confirming your enrollment...');
+            setStatus('Confirming enrollment...');
 
             try {
                 const response = await fetch(`${API_BASE}/api/otp/verify`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        email: formData.email,
-                        otp: code,
-                        courseId: formData.mc
-                    })
+                    body: JSON.stringify({ email: formData.email, otp: code, courseId: formData.mc })
                 });
                 const result = await response.json();
-                if (!response.ok || !result.success) throw new Error(result.message || 'Verification failed.');
+                if (!result.success) throw new Error(result.message);
                 
                 stopTimer();
                 form.reset();
                 otpVerifySection.classList.add('hidden');
                 otpRequestSection.classList.remove('hidden');
-                requestOtpBtn.disabled = false;
-                requestOtpBtn.textContent = 'Request OTP to Lock Price';
                 timerEl.textContent = '10:00';
                 
-                alert(`Success! Enrollment confirmed for ${COURSE_DETAILS[result.enrollment.course].name} at €${result.enrollment.price}. A confirmation email has been sent.`);
-                fetchCounters(); // Refresh cards with new count
+                alert(`Success! Enrollment confirmed for ${COURSE_DETAILS[result.enrollment.course].name} at €${result.enrollment.price}.`);
+                fetchCounters();
                 
             } catch (error) {
-                setStatus(error.message, true);
+                setStatus(error.message || "Failed to verify OTP.", true);
+            } finally {
                 verifyOtpBtn.disabled = false;
-                verifyOtpBtn.textContent = 'Verify & Enroll';
             }
         }
         
-        // --- Event Listeners ---
         requestOtpBtn.addEventListener('click', handleRequestOtp);
         verifyOtpBtn.addEventListener('click', handleVerifyOtp);
         document.addEventListener('DOMContentLoaded', fetchCounters);
-
     </script>
 </body>
 </html>
